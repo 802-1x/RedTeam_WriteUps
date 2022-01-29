@@ -1,0 +1,9 @@
+Fawn
+Given IP: 10.129.94.241
+
+1) Connected via OpenVPN and started the VM instance. Noted the target IP address.
+2) Let's start with an nmap scan to enumerate any open ports: nmap -sS -sV -p- -T4 -A 10.129.94.241 -vv
+   21/tcp showed up right away, running version vsftpd 3.0.3 with anonymous login allowed. There is a flag.txt on the share with read-only permission for anonymous.
+3) Using ftp 10.129.94.241 we can connect to the anonymous share using ftp/ftp as the username/password combination. Using the command get flag.txt we can download the file to home directory. The command ls shows no other files.
+
+Flag: HTB{035db21c881520061c53e0536e44f815}
