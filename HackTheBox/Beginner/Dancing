@@ -1,0 +1,9 @@
+Dancing
+Given IP: 10.129.85.65
+
+1) Connected via OpenVPN and started the VM instance. Noted the target IP address.
+2) Let's start with an nmap scan to enumerate any open ports: nmap -sS -sV -p- -T4 -A 10.129.85.65 -vv
+   445/tcp, 139/tcp and 135/tcp are open. SMB Signing enabled but not required is interesting. SMB2 security mode is 2.02
+3) Using smbclient -L 10.129.85.65 reveals various default shares and a customer share called WorkShares. Attempting to connect to each share using smbclient \\\\10.129.85.65\\sharename$ shows IPC$ and WorkShares open. Issuing command l on the WorkShares connection shows a directory for Amy.J and James.P. Under James.P we can see the flag.txt file. Running get flag.txt downloads the flag to our home directory.
+
+Flag: HTB{5f61c10dffbc77a704d76016a22f1664}
