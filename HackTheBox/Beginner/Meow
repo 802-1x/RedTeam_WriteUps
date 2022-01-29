@@ -1,0 +1,10 @@
+Meow
+Given IP: 10.129.97.237
+
+1) Connected via OpenVPN and started the VM instance. Noted the target machine IP address.
+2) Let's start with a nmap scan to enumerate any open ports: nmap -sS -sV -p- -T4 -A 10.129.97.237 -vv
+   23/tcp showed up right away. While the scan is running, let's see what we get when we telnet to the machine.
+3) Using telnet we see a login banner. Trying root with no password lets us straight in. I cancelled the nmap scan.
+4) ls -lh shows a flag.txt in that directory. Using cat flag.txt reveals the flag.
+
+Flag: HTB{b40abdfe23665f766f9c61ecba8a4c19}
