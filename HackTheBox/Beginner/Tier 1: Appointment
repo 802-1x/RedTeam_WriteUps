@@ -1,0 +1,11 @@
+Appointment
+Given IP: 10.129.3.29
+
+1) Connected via OpenVPN and started the VM instance. Noted the target machine IP address.
+2) Let's start with a nmap scan to enumerate any open ports:
+      nmap -sS -sV -p- -T4 -A 10.129.3.29 -vv
+   80/tcp (apache) was discovered
+3) Nothing in the client-side code. Trying basic SQL injection worked with:
+      admin'#
+
+Flag: HTB{e3d0796d002a446c0e622226f42e9672}
